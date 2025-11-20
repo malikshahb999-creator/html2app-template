@@ -23,10 +23,10 @@ npm run build
 
 ```jsonc
 {
-  "name": "App Name", // 12 character max including spaces
-  "version": "1.0.0", // version in the format [Major].[Minor].[Patch] (string)
-  "build": 1, // build in the format [Build] (should be a positive integer)
-  "id": "com.example.appname", // Must be in Java package form with no dashes (ex: com.example.app)
+  "name": "App Name", // REQUIRED: 12 character max including spaces
+  "version": "1.0.0", // REQUIRED: version in the format [Major].[Minor].[Patch] (string)
+  "build": 1, // REQUIRED: build in the format [Build] (should be a positive integer)
+  "id": "com.example.appname", // REQUIRED: Must be in Java package form with no dashes (ex: com.example.app)
   "fullscreen": false, // true | false
   "orientation": "default", // "portrait" | "landscape" | "default"
   "plugins": [], // (see below)
