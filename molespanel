@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>molespanelFF</title>
+<style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #0c0c0c; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; }
+
+    /* Small Control Panel Wrapper */
+    #app-container {
+        width: 360px;
+        height: 600px;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 0 40px #ff33cc;
+        display: flex;
+        flex-direction: column;
+        background: #0c0c0c;
+    }
+
+    /* LOGIN PAGE */
+    #login-page {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #0c0c0c;
+        color: white;
+    }
+    #login-box {
+        background: rgba(0,0,0,0.7);
+        padding: 20px;
+        width: 90%;
+        border-radius: 12px;
+        box-shadow: 0 0 20px #ff33cc;
+        text-align: center;
+    }
+    #login-box h2 { margin-bottom: 15px; color: #ff33cc; text-shadow: 0 0 10px #ff33cc; font-size: 22px; }
+    #login-box input {
+        width: 100%; padding: 10px; margin: 8px 0;
+        border: 2px solid #ff33cc; border-radius: 8px; background: #000; color: white;
+        font-size: 14px; box-shadow: 0 0 10px #ff33cc;
+    }
+    #login-box input::placeholder { color: #ff99dd; font-size: 13px; }
+    #login-box button {
+        width: 100%; padding: 10px; margin-top: 12px; border: none; border-radius: 8px;
+        cursor: pointer; font-size: 15px; box-shadow: 0 0 15px #ff33cc;
+        color: white; background: #ff33cc; transition: 0.3s;
+    }
+    #login-box button:hover { background: #ff66dd; box-shadow: 0 0 25px #ff66dd; }
+
+    /* DASHBOARD */
+    #dashboard { display: none; flex: 1; }
+
+    .sidebar {
+        width: 100px;
+        background: #1f1f2e;
+        color: white;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .profile-box img {
+        width: 60px; height: 60px; border-radius: 50%; border: 2px solid #ff33cc;
+        box-shadow: 0 0 15px #ff33cc;
+    }
+    .profile-box h3 { margin-top: 5px; font-size: 14px; color: #ff33cc; text-shadow: 0 0 5px #ff33cc; text-align: center; }
+    .menu-item {
+        width: 100%; padding: 8px 5px; margin: 4px 0; background: #2c2c3d; border-radius: 6px;
+        cursor: pointer; text-align: center; font-size: 12px; transition: 0.3s;
+    }
+    .menu-item:hover { background: #3b3b52; }
+    .logout {
+        margin-top: auto; width: 100%; background: #ff4b4b; text-align: center; padding: 8px;
+        border-radius: 6px; cursor: pointer; transition: 0.3s; font-size: 12px;
+    }
+    .logout:hover { background: #ff2e2e; }
+
+    .main { flex: 1; padding: 10px; overflow-y: auto; }
+
+    /* Sections */
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* Boxes */
+    .box, .settings-box {
+        background: rgba(0,0,0,0.65); border-radius: 10px; padding: 15px; margin-bottom: 15px;
+        box-shadow: 0 0 15px #ff33cc; border: 1px solid #ff33cc; text-align: center; font-size: 12px;
+    }
+    .settings-box { border-color: #00eaff; box-shadow: 0 0 15px #00eaff; }
+
+    .box img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #ff0099; box-shadow: 0 0 15px #ff0099; }
+    h2 { color: #ff33cc; text-shadow: 0 0 5px #ff33cc; font-size: 16px; }
+    label, p { font-size: 12px; margin: 5px 0; }
+    select, input {
+        width: 100%; padding: 6px; margin-top: 3px; border-radius: 6px;
+        border: 1px solid #00eaff; background: #000; color: white; font-size: 12px;
+        box-shadow: 0 0 5px #00eaff;
+    }
+    button.btn {
+        padding: 8px 12px; margin-top: 8px; border: none; border-radius: 6px;
+        cursor: pointer; background: #ff33cc; color: white; font-size: 13px;
+        box-shadow: 0 0 10px #ff33cc; transition: 0.3s;
+    }
+    button.btn:hover { background: #ff66dd; box-shadow: 0 0 20px #ff66dd; }
+
+    /* Toggle Switch */
+    .switch { position: relative; display: inline-flex; align-items: center; gap:5px; font-size: 12px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: relative; cursor: pointer; width: 40px; height: 20px; background-color: #555; border-radius: 20px; transition: 0.4s; }
+    .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: white; transition: 0.4s; border-radius: 50%; }
+    input:checked + .slider { background-color: var(--color); box-shadow: 0 0 10px var(--color); }
+    input:checked + .slider:before { transform: translateX(20px); }
+</style>
+</head>
+<body>
+<div id="app-container">
+
+    <!-- LOGIN PAGE -->
+    <div id="login-page">
+        <div id="login-box">
+            <h2>Login</h2>
+            <input type="text" id="user" placeholder="Username">
+            <input type="password" id="pass" placeholder="Password">
+            <button onclick="login()">Login</button>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard">
+        <div class="sidebar">
+            <div class="profile-box">
+                <img src="https://i.imgur.com/4ZQZ4fL.png">
+                <h3>molespanel</h3>
+            </div>
+            <div class="menu-item" onclick="showSection('profile')">👤</div>
+            <div class="menu-item" onclick="showSection('home')">🏠</div>
+            <div class="menu-item" onclick="showSection('settings')">⚙</div>
+            <div class="logout" onclick="logout()">⏻</div>
+        </div>
+
+        <div class="main">
+            <!-- Profile Section -->
+            <div id="profile" class="section">
+                <div class="box">
+                    <img src="https://i.imgur.com/4ZQZ4fL.png">
+                    <h2>molespanel</h2>
+                    <p>Welcome to gaming profile</p>
+                    <p>This panel is created by moles panel.</p>
+                    <p>Version: 1.1</p>
+                    <p>Date: 22-11-2025</p>
+                </div>
+            </div>
+
+            <!-- Home Section -->
+            <div id="home" class="section">
+                <div class="box">
+                    <h2>Welcome, molespanel!</h2>
+                    <p>Free Fire Panel</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                        <label class="switch">
+                            <input type="checkbox" id="aimbot">
+                            <span class="slider" style="background-color:#555; box-shadow:0 0 5px #ff33cc;"></span>
+                            Aimbot
+                        </label>
+
+                        <label class="switch">
+                            <input type="checkbox" id="dragheadshot">
+                            <span class="slider" style="background-color:#555; box-shadow:0 0 5px #33ff77;"></span>
+                            Drag Headshot
+                        </label>
+
+                        <label class="switch">
+                            <input type="checkbox" id="invisible">
+                            <span class="slider" style="background-color:#555; box-shadow:0 0 5px #33ccff;"></span>
+                            Quick Invisible
+                        </label>
+
+                        <label class="switch">
+                            <input type="checkbox" id="fastspeed">
+                            <span class="slider" style="background-color:#555; box-shadow:0 0 5px #ff9933;"></span>
+                            Fast Speed
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings" class="section">
+                <div class="settings-box">
+                    <h2>Settings</h2>
+                    <label>Theme</label>
+                    <select>
+                        <option>Gaming Neon</option>
+                        <option>Dark Mode</option>
+                        <option>Light Mode</option>
+                    </select>
+                    <label>Notifications</label>
+                    <select>
+                        <option>Enabled</option>
+                        <option>Disabled</option>
+                    </select>
+                    <label>Language</label>
+                    <select>
+                        <option>English</option>
+                        <option>Urdu</option>
+                        <option>Hindi</option>
+                    </select>
+                    <button class="btn" onclick="alert('Settings Saved!')">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function login() {
+        let username = document.getElementById("user").value;
+        let password = document.getElementById("pass").value;
+        if(username === "molespanel" && password === "0258") {
+            document.getElementById("login-page").style.display = "none";
+            document.getElementById("dashboard").style.display = "flex";
+            showSection('home');
+        } else {
+            alert("Incorrect Username or Password!");
+        }
+    }
+
+    function showSection(id) {
+        const sections = document.querySelectorAll('.section');
+        sections.forEach(sec => sec.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function logout() {
+        if(confirm("Are you sure you want to logout?")) {
+            document.getElementById("dashboard").style.display = "none";
+            document.getElementById("login-page").style.display = "flex";
+            document.getElementById("user").value = "";
+            document.getElementById("pass").value = "";
+        }
+    }
+</script>
+</body>
+</html>
